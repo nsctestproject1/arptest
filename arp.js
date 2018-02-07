@@ -13,17 +13,17 @@ const intSpeed = [1, 3, 6, 1, 2, 1, 2, 2, 1, 5]
 const freeMemoryOID = [1, 3, 6, 1, 4, 1, 9, 2, 1, 8, 0] // max 128MB
 const temparatureOID = [1, 3, 6, 1, 4, 1, 9, 9, 13, 1, 3, 1, 3, 1005]
 const cpuUsageOID = [1,3,6,1,4,1,9,2,1,57,0]
-const nodeNIP = '10.4.15.1'
+const nodeNIP = '192.168.1.254'
 /* root / root1234 10.4.15.1  192.168.1.254*/ 
 const {exec} = require('child_process')
 
 let config = {
-  apiKey: 'AIzaSyCjFxu7Ft4mfHp8ksLYoRkOSWeK4tRmI0w',
-  authDomain: 'showdowndata.firebaseapp.com',
-  databaseURL: 'https://showdowndata.firebaseio.com',
-  projectId: 'showdowndata',
-  storageBucket: 'showdowndata.appspot.com',
-  messagingSenderId: '811451470025'
+  apiKey: "AIzaSyCWxphoi3S89Y5Hf1mG1qzf-x327cnN1cU",
+    authDomain: "nscproject-2b86b.firebaseapp.com",
+    databaseURL: "https://nscproject-2b86b.firebaseio.com",
+    projectId: "nscproject-2b86b",
+    storageBucket: "nscproject-2b86b.appspot.com",
+    messagingSenderId: "240656147608"
 }
 firebase.initializeApp(config)
 // get data from firebase
@@ -89,14 +89,6 @@ setInterval(() => {
     upload = upload.trim()
   })
   getMIB('Node1', date, time)
-  sendTemparature().then((result) => {
-    let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
-    let indexOfTemparature = newResult.indexOf('T')
-    humanity = newResult.slice(1,indexOfTemparature)
-    temparature = newResult.slice(indexOfTemparature+1 )
-    humanity = humanity.trim()
-    temparature = temparature.trim()
-  })
 }, 300000)
 
 function showResult () {
@@ -362,12 +354,10 @@ function getMIB (nodeName, date, time) {
 
     let suminpktU = 0
     let suminpktsErr = 0
-    for (let i = 63; i < 67; i++) {
-      sumInbound += inbound[i].inbound
-      sumOutbound += outbound[i].outbound
-      suminpktU += packetinU[i].pktsinu
-      suminpktsErr += pktsInErr[i].pktsinerr
-    }
+      sumInbound += inbound[0].inbound
+      sumOutbound += outbound[0].outbound
+      suminpktU += packetinU[0].pktsinu
+      suminpktsErr += pktsInErr[0].pktsinerr
     sumInpkts = suminpktU
     if (sumInpkts !== 0) {
       packetloss = (suminpktsErr / sumInpkts) * 100
@@ -401,7 +391,7 @@ function getMIB (nodeName, date, time) {
   if (check) {
     let checkInbound = check.inbound
     let checkOutbound = check.outbound
-    let memoryFree = (memory*100)/128
+    let memoryFree = Math.abs( ((memory*100)/128)-100 )
     let data = {}
     let insertIn = {
       value: sumInbound,
@@ -414,8 +404,8 @@ function getMIB (nodeName, date, time) {
       time: time
     }
     setTimeout(() => {   
-      let inb =  inbound[64].inbound
-      let outb = outbound[64].outbound 
+      let inb =  inbound[0].inbound
+      let outb = outbound[0].outbound 
       let mainlinkData = {
         in: inb,
         out: outb
@@ -468,9 +458,9 @@ function calculateUtilize (countInterface,interfaceSpeed,nodeName) {
   let inbound2 = 0
   let outbound1 = 0
   let outbound2 = 0
-  for (let i = 64; i <= 67; i++) {
-    sumInterface += interfaceSpeed[i].intSpd/1048576
-  }
+
+    sumInterface += interfaceSpeed[0].intSpd/1048576
+  
 
   let data =  dbInfo.find(info => info.node === nodeName)
    inbound1 = data.inbound[data.inbound.length-1].value
@@ -488,19 +478,6 @@ function calculateUtilize (countInterface,interfaceSpeed,nodeName) {
   firebase.database().ref('db/' + data.id).update({
     utilizein: sumIn,
     utilizeout: sumOut
-  })
-}
-
-function sendTemparature () {
-  return new Promise((resolve, reject) => {
-    exec('sudo ./dht', {
-      cwd: '/project1'
-    }, (err, stdout, stderr) => {
-      setTimeout(() => {
-        if (err) return reject("get Temparature Error : " + err)
-        else resolve(`${stdout}`)
-      })
-    })
   })
 }
 /* // Define port number as 3000
