@@ -103,12 +103,12 @@ function showResult () {
 }
 
 function getIP () {
-  // console.log("We're getting in IP")
+  console.log("We're getting in IP")
   return new Promise((resolve, reject) => {
     exec('/sbin/ifconfig eth0 | grep \'inet addr:\' | cut -d: -f2 | awk \'{ print $1}\'', (err, stdout, stderr) => {
       console.log(stdout)
       if (err) reject("get IP Error :"+err)
-      else resolve(ipNow = `${stdout}`)
+      else resolve(console.log("log here if passed"), ipNow = `${stdout}`)
     })
   })
 }
