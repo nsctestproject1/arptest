@@ -392,7 +392,7 @@ function getMIB (nodeName, date, time) {
   if (check) {
     let checkInbound = check.inbound
     let checkOutbound = check.outbound
-    let memoryFree = (memory*100)/128)-100
+    let memoryFree = (memory*100)/128
     let data = {}
     let insertIn = {
       value: sumInbound,
