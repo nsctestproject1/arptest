@@ -103,9 +103,9 @@ function showResult () {
 }
 
 function getIP () {
-  console.log("We're getting in IP")
+  //console.log("We're getting in IP")
   return new Promise((resolve, reject) => {
-    exec('/sbin/ifconfig eth0 | grep \'inet addr:\' | cut -d: -f2 | awk \'{ print $1}\'', (err, stdout, stderr) => {
+    exec('/sbin/ifconfig eth0 |grep \'inet \' |cut -d \\t -f2 |tr -d \'ne\'', (err, stdout, stderr) => {
       console.log(stdout)
       if (err) reject("get IP Error :"+err)
       else resolve( ipNow = `${stdout}`)
@@ -115,7 +115,7 @@ function getIP () {
 
 function getOnline (ip) {
 
-  console.log('This Is IP Parameter ' + ipNow)
+ // console.log('This Is IP Parameter ' + ipNow)
   let newIP = ip.replace(/(\r\n|\n|\r)/gm, '').concat('/24')
   return new Promise((resolve, reject) => {
     exec('nmap -sP ' + newIP, (err, stdout, stderr) => {
