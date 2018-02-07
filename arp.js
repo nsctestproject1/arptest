@@ -108,14 +108,14 @@ function getIP () {
     exec('/sbin/ifconfig eth0 | grep \'inet addr:\' | cut -d: -f2 | awk \'{ print $1}\'', (err, stdout, stderr) => {
       console.log(stdout)
       if (err) reject("get IP Error :"+err)
-      else resolve(console.log("log here if passed"), ipNow = `${stdout}`)
+      else resolve( ipNow = `${stdout}`)
     })
   })
 }
 
 function getOnline (ip) {
 
-  console.log('This Is IP Parameter ' + ip)
+  console.log('This Is IP Parameter ' + ipNow)
   let newIP = ip.replace(/(\r\n|\n|\r)/gm, '').concat('/24')
   return new Promise((resolve, reject) => {
     exec('nmap -sP ' + newIP, (err, stdout, stderr) => {
