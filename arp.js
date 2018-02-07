@@ -212,7 +212,7 @@ function getMIB (nodeName, date, time) {
           indexOID: letbind.oid[10],
           inbound: parseInt(letbind.value / 1048576)
         }
-        console.log(data)
+        //console.log(data)
         inbound.push(data)
       })
       // console.log(inbound) out commend for checking data
@@ -344,7 +344,7 @@ function getMIB (nodeName, date, time) {
           indexOID: letbind.oid[10],
           intName: letbind.value
         }
-        console.log(letbind.value)
+        //console.log(letbind.value)
         intName.push(data)
         if ((letbind.value).toString().toLowerCase().charAt(0) === 'f' || (letbind.value).toString().toLowerCase().charAt(0) === 'g') {
           countInterface++
