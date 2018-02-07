@@ -440,7 +440,7 @@ function getMIB (nodeName, date, time) {
 function speedTest () {
   return new Promise((resolve, reject) => {
     exec('python speedtest-cli | grep \'Download:\\|Upload:\'|cut -d: -f2', {
-      cwd: '/project1'
+      cwd: '/nsc'
     }, (err, stdout, stderr) => {
       setTimeout(() => {
         if (err) return reject("SpeedTest Error : " + err)
