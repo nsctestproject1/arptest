@@ -113,7 +113,8 @@ function getIP () {
 }
 
 function getOnline (ip) {
-  //console.log('This Is IP Parameter ' + ip)
+  
+  console.log('This Is IP Parameter ' + ip)
   let newIP = ip.replace(/(\r\n|\n|\r)/gm, '').concat('/24')
   return new Promise((resolve, reject) => {
     exec('nmap -sP ' + newIP, (err, stdout, stderr) => {
