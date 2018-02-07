@@ -77,19 +77,19 @@ setInterval(() => {
   let time = dateFormat(now, 'HH:MM:ss')
   /// //////////////////// Date letiable End here ////////////////////////
   showResult()
-  sendtoFirebase('Node1', date, time)
-  speedTest().then((result) => {
-    let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
-    let indexOfdownload = newResult.indexOf('M')
-    let indexOfupload = newResult.indexOf('s')
-    let indexOfupload2 = newResult.lastIndexOf('M')
-    download = newResult.slice(0, indexOfdownload)
-    upload = newResult.slice(indexOfupload + 1, indexOfupload2)
-    download = download.trim()
-    upload = upload.trim()
+  // sendtoFirebase('Node1', date, time)
+  // speedTest().then((result) => {
+  //   let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
+  //   let indexOfdownload = newResult.indexOf('M')
+  //   let indexOfupload = newResult.indexOf('s')
+  //   let indexOfupload2 = newResult.lastIndexOf('M')
+  //   download = newResult.slice(0, indexOfdownload)
+  //   upload = newResult.slice(indexOfupload + 1, indexOfupload2)
+  //   download = download.trim()
+  //   upload = upload.trim()
   })
   getMIB('Node1', date, time)
-}, 60000)
+}, 1000)
 
 function showResult () {
   getIP().then(getOnline).then((data) => {
@@ -106,6 +106,7 @@ function getIP () {
   // console.log("We're getting in IP")
   return new Promise((resolve, reject) => {
     exec('/sbin/ifconfig eth0 | grep \'inet addr:\' | cut -d: -f2 | awk \'{ print $1}\'', (err, stdout, stderr) => {
+      console.log(`${stdout}`)
       if (err) reject("get IP Error :"+err)
       else resolve(ipNow = `${stdout}`)
     })
@@ -113,7 +114,7 @@ function getIP () {
 }
 
 function getOnline (ip) {
-  
+
   console.log('This Is IP Parameter ' + ip)
   let newIP = ip.replace(/(\r\n|\n|\r)/gm, '').concat('/24')
   return new Promise((resolve, reject) => {
