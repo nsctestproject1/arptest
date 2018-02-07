@@ -87,8 +87,8 @@ setInterval(() => {
   //   upload = newResult.slice(indexOfupload + 1, indexOfupload2)
   //   download = download.trim()
   //   upload = upload.trim()
-  })
-  getMIB('Node1', date, time)
+  // })
+  // getMIB('Node1', date, time)
 }, 1000)
 
 function showResult () {
