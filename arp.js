@@ -89,7 +89,7 @@ setInterval(() => {
     upload = upload.trim()
   })
   getMIB('Node1', date, time)
-}, 1000)
+}, 60000)
 
 function showResult () {
   getIP().then(getOnline).then((data) => {
